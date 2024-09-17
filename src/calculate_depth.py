@@ -23,7 +23,7 @@ def process_5min_intervals(interval_data, start_time, end_time, close_price):
     ]
     a_qty_sum = filtered_data[filtered_data['side'] == 'a']['qty'].sum()
     b_qty_sum = filtered_data[filtered_data['side'] == 'b']['qty'].sum()
-    depth_ratio = a_qty_sum / b_qty_sum if b_qty_sum != 0 else np.inf
+    depth_ratio = b_qty_sum / a_qty_sum if a_qty_sum != 0 else np.inf
 
     data_within_1pct = interval_data[
         (interval_data['price'] >= bid_price_lower_1pct) & (interval_data['price'] <= ask_price_upper_1pct)
