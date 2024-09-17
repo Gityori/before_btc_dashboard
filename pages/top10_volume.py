@@ -9,17 +9,20 @@ import pandas as pd
 import discord
 from io import StringIO
 
+st.write("Python version:", sys.version)
+st.write("Current working directory:", os.getcwd())
+st.write("Contents of current directory:", os.listdir())
+st.write("Contents of src directory:", os.listdir("src"))
+st.write("Python path:", sys.path)
+
 # 親ディレクトリをPythonパスに追加
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
-# srcディレクトリをPythonパスに追加
-src_dir = os.path.join(parent_dir, 'src')
-sys.path.append(src_dir)
-
-from src.binance_top10 import get_binance_volume_top10
-from src.bybit_top10 import get_bybit_volume_top10
+# srcからの相対インポート
+from ..src.binance_top10 import get_binance_volume_top10
+from ..src.bybit_top10 import get_bybit_volume_top10
 
 st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
