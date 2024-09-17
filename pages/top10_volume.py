@@ -1,3 +1,14 @@
+import os
+import sys
+import streamlit as st
+from datetime import datetime, timedelta
+import pytz
+import json
+import asyncio
+import pandas as pd
+import discord
+from io import StringIO
+
 # 親ディレクトリをPythonパスに追加
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -9,18 +20,6 @@ sys.path.append(src_dir)
 
 from src.binance_top10 import get_binance_volume_top10
 from src.bybit_top10 import get_bybit_volume_top10
-from io import StringIO
-
-import streamlit as st
-import sys
-import os
-from datetime import datetime, timedelta
-import pytz
-import json
-import asyncio
-from dotenv import load_dotenv
-import pandas as pd
-import discord
 
 st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
