@@ -1,4 +1,3 @@
-from .data_fetcher import get_binance_orderbook_data, calculate_depth
 from .data_processor import process_data, process_spot_depth_data
 from .visualizer import create_weekday_plot, create_hourly_plot, create_heatmap, create_depth_ratio_plot
 from .discord_notifier import DiscordNotifier

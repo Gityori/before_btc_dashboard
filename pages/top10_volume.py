@@ -1,14 +1,8 @@
-import os
-import sys
 import streamlit as st
-from datetime import datetime, timedelta
-import pytz
-import json
-import asyncio
-import pandas as pd
-import discord
-from io import StringIO
+import sys
+import os
 
+# デバッグ情報の表示（必要に応じて）
 st.write("Python version:", sys.version)
 st.write("Current working directory:", os.getcwd())
 st.write("Contents of current directory:", os.listdir())
@@ -20,9 +14,18 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
-# srcからの相対インポート
-from ..src.binance_top10 import get_binance_volume_top10
-from ..src.bybit_top10 import get_bybit_volume_top10
+# srcディレクトリからの絶対インポート
+from src.binance_top10 import get_binance_volume_top10
+from src.bybit_top10 import get_bybit_volume_top10
+
+# 他の必要なインポート
+from datetime import datetime, timedelta
+import pytz
+import json
+import asyncio
+import pandas as pd
+import discord
+from io import StringIO
 
 st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
