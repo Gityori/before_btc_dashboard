@@ -1,27 +1,22 @@
 import os
+import sys
+import streamlit as st
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+src_dir = os.path.join(project_root, 'src')
+sys.path.insert(0, src_dir)
+
+from get_binance_orderbook_data import get_historical_data_link, download_file, get_close_prices
+from calculate_depth import process_large_file
+from visualizer import create_combined_chart
+
 import logging
 import traceback
 from datetime import datetime, timedelta
 import time
 import pytz
 import pandas as pd
-import streamlit as st
 from binance.client import Client
-from dotenv import load_dotenv
-import sys
-
-# 現在のファイルのディレクトリ
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# srcディレクトリをPythonパスに追加
-src_dir = os.path.join(current_dir, '..', 'src')
-sys.path.append(src_dir)
-
-from get_binance_orderbook_data import get_historical_data_link, download_file, get_close_prices
-from calculate_depth import process_large_file
-from visualizer import create_combined_chart
-
-# 環境変数のロード
-load_dotenv()
 
 # Binance APIクレデンシャル
 API_KEY = st.secrets["BINANCE_API_KEY"]
