@@ -1,9 +1,10 @@
 import sys
 import os
 
-# プロジェクトのルートディレクトリを取得
+# 'src' ディレクトリを sys.path に追加
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, project_root)
+src_dir = os.path.join(project_root, 'src')
+sys.path.insert(0, src_dir)
 
 import streamlit as st
 
@@ -11,13 +12,16 @@ import streamlit as st
 st.write("Python version:", sys.version)
 st.write("Current working directory:", os.getcwd())
 st.write("Contents of current directory:", os.listdir())
-st.write("Contents of src directory:", os.listdir("src"))
+st.write("Contents of src directory:", os.listdir(src_dir))
 st.write("Python path after modification:", sys.path)
 st.write("Project root:", project_root)
 
-from src.binance_top10 import get_binance_volume_top10
-from src.bybit_top10 import get_bybit_volume_top10
+import binance_top10
+import bybit_top10
 
+# 以降、binance_top10 や bybit_top10 の関数を使用します
+binance_spot = binance_top10.get_binance_volume_top10('spot')
+bybit_spot = bybit_top10.get_bybit_volume_top10('spot')
 # 他の必要なインポート
 from datetime import datetime, timedelta
 import pytz
@@ -139,10 +143,10 @@ def clean_output(output):
 async def update_data():
     try:
         # データ取得と整形
-        binance_spot = clean_output(capture_output(get_binance_volume_top10, 'spot'))
-        binance_futures = clean_output(capture_output(get_binance_volume_top10, 'futures'))
-        bybit_spot = clean_output(capture_output(get_bybit_volume_top10, 'spot'))
-        bybit_perp = clean_output(capture_output(get_bybit_volume_top10, 'perp'))
+        binance_spot = clean_output(capture_output(binance_top10.get_binance_volume_top10, 'spot'))
+        binance_futures = clean_output(capture_output(binance_top10.get_binance_volume_top10, 'futures'))
+        bybit_spot = clean_output(capture_output(bybit_top10.get_bybit_volume_top10, 'spot'))
+        bybit_perp = clean_output(capture_output(bybit_top10.get_bybit_volume_top10, 'perp'))
 
         data = {
             'binance_spot': binance_spot,
