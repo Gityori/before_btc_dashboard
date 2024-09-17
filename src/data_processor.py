@@ -1,8 +1,9 @@
 import pandas as pd
+import numpy as np
 
 def process_data(data: pd.DataFrame) -> tuple:
     """
-    Process the raw data to calculate return rates.
+    Process the raw price data to calculate return rates.
     
     :param data: Raw DataFrame containing price data
     :return: Tuple containing weekday_return, hour_return, and heatmap_data

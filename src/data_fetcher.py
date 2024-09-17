@@ -1,7 +1,10 @@
 from binance.client import Client
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+import time
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_binance_data(client: Client, symbol: str, interval: str, start_time: datetime, end_time: datetime) -> pd.DataFrame:
     """
@@ -23,7 +26,4 @@ def get_binance_data(client: Client, symbol: str, interval: str, start_time: dat
         return data
     except Exception as e:
         logging.error(f"Error fetching data from Binance API: {e}")
-        return None
-
-# ロギングの設定を行います。
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+        return pd.DataFrame()
