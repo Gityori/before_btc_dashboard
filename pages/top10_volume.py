@@ -109,7 +109,8 @@ def parse_volume_data(data):
 def display_volume_data(data, title):
     st.subheader(title)
     parsed_data = parse_volume_data(data)
-    st.dataframe(parsed_data, hide_index=True, use_container_width=True)
+    parsed_data.reset_index(drop=True, inplace=True)  # インデックスをリセット
+    st.dataframe(parsed_data, use_container_width=True)
 
 def save_data_to_cache(data):
     with open(CACHE_FILE, 'w') as f:
