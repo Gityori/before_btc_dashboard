@@ -1,5 +1,6 @@
 import sys
 import os
+import streamlit as st
 
 st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
@@ -8,7 +9,6 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 src_dir = os.path.join(project_root, 'src')
 sys.path.insert(0, src_dir)
 
-import streamlit as st
 
 # デバッグ情報の表示
 st.write("Python version:", sys.version)
