@@ -9,15 +9,6 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 src_dir = os.path.join(project_root, 'src')
 sys.path.insert(0, src_dir)
 
-
-# デバッグ情報の表示
-st.write("Python version:", sys.version)
-st.write("Current working directory:", os.getcwd())
-st.write("Contents of current directory:", os.listdir())
-st.write("Contents of src directory:", os.listdir(src_dir))
-st.write("Python path after modification:", sys.path)
-st.write("Project root:", project_root)
-
 import binance_top10
 import bybit_top10
 
