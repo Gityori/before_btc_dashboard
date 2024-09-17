@@ -9,12 +9,10 @@ st.write("Contents of current directory:", os.listdir())
 st.write("Contents of src directory:", os.listdir("src"))
 st.write("Python path:", sys.path)
 
-# 親ディレクトリをPythonパスに追加
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
+# Add the parent directory to sys.path
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 
-# srcディレクトリからの絶対インポート
 from src.binance_top10 import get_binance_volume_top10
 from src.bybit_top10 import get_bybit_volume_top10
 
