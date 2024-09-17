@@ -1,6 +1,8 @@
 import sys
 import os
 
+st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
+
 # 'src' ディレクトリを sys.path に追加
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 src_dir = os.path.join(project_root, 'src')
@@ -30,8 +32,6 @@ import asyncio
 import pandas as pd
 import discord
 from io import StringIO
-
-st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
 # Discord設定
 DISCORD_TOKEN = st.secrets["DISCORD_TOKEN"]
