@@ -23,7 +23,7 @@ API_KEY = st.secrets["BINANCE_API_KEY"]
 SECRET_KEY = st.secrets["BINANCE_SECRET_KEY"]
 
 # Binance APIベースURL
-BASE_URL = 'https://api.binance.com'
+BASE_URL = 'https://data.binance.com'
 
 # Binanceクライアントの初期化
 client = Client(API_KEY, SECRET_KEY)
