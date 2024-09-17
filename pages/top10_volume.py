@@ -1,14 +1,3 @@
-import streamlit as st
-import sys
-import os
-from datetime import datetime, timedelta
-import pytz
-import json
-import asyncio
-from dotenv import load_dotenv
-import pandas as pd
-import discord
-
 # 親ディレクトリをPythonパスに追加
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -22,8 +11,16 @@ from src.binance_top10 import get_binance_volume_top10
 from src.bybit_top10 import get_bybit_volume_top10
 from io import StringIO
 
-# .envファイルを読み込む（親ディレクトリにある場合）
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+import streamlit as st
+import sys
+import os
+from datetime import datetime, timedelta
+import pytz
+import json
+import asyncio
+from dotenv import load_dotenv
+import pandas as pd
+import discord
 
 st.set_page_config(page_title="Crypto Volume Rankings", page_icon="📊", layout="wide")
 
