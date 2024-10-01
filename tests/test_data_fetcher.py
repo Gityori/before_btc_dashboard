@@ -5,7 +5,7 @@ import pandas as pd
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_fetcher import get_binance_data, calculate_depth, get_depth_data, fetch_depth_data
+from fetch_Kline_data import get_binance_data, calculate_depth, get_depth_data, fetch_depth_data
 
 class TestDataFetcher(unittest.TestCase):
 

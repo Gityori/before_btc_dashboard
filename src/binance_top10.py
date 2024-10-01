@@ -30,8 +30,8 @@ def is_perpetual(symbol):
 
 def get_binance_volume_top10(trade_type='spot'):
     if trade_type == 'spot':
-        ticker_url = "https://data.binance.com/api/v3/ticker/24hr"
-        exchange_info_url = "https://data.binance.com/api/v3/exchangeInfo"
+        ticker_url = "https://api.binance.com/api/v3/ticker/24hr"
+        exchange_info_url = "https://api.binance.com/api/v3/exchangeInfo"
     elif trade_type == 'futures':
         usdt_ticker_url = "https://fapi.binance.com/fapi/v1/ticker/24hr"
         coin_ticker_url = "https://dapi.binance.com/dapi/v1/ticker/24hr"

@@ -18,9 +18,18 @@ import pytz
 import pandas as pd
 from binance.client import Client
 
+# 新しくインポートする部分
+from bigquery_integration import upload_dataframe_to_bigquery
+
 # Binance APIクレデンシャル
 API_KEY = st.secrets["BINANCE_API_KEY"]
 SECRET_KEY = st.secrets["BINANCE_SECRET_KEY"]
+
+# Google Cloud StorageとBigQueryの設定をsecrets.tomlから読み込む
+dataset_id = st.secrets["BIGQUERY_DATASET_ID"]  # BigQueryのデータセットID
+table_id = st.secrets["BIGQUERY_TABLE_ID"]  # BigQueryのテーブルID
+project_id = st.secrets["BIGQUERY_PROJECT_ID"]  # Google CloudプロジェクトID
+service_account_key_path = "C:/Users/kikuchi/Dropbox/Python Scripts/crypto_monitor/btc-dashboard/test-depth-visualize-b3460b9bf594.json"  # サービスアカウントの秘密鍵ファイルパス
 
 # Binance APIベースURL
 BASE_URL = 'https://api.binance.com'
@@ -81,6 +90,14 @@ def run_data_processing():
                     if results_df['interval_end'].iloc[-1] > end_time:
                         results_df = results_df[:-1]
                     print(f"Total rows: {len(results_df)}")
+                    
+                    # BigQueryに直接アップロード (bigquery_utilsからの関数呼び出し)
+                    upload_dataframe_to_bigquery(
+                        dataframe=results_df,
+                        dataset_id=dataset_id,
+                        table_id=table_id,
+                        service_account_key_path=service_account_key_path
+                    )
                     
                     return results_df
                 else:
