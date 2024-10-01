@@ -18,8 +18,8 @@ def main():
     st.title('BINANCE BTCUSDT SPOT ANALYSIS')
 
     # Binance API setup
-    API_KEY = st.secrets["BINANCE_API_KEY"]
-    SECRET_KEY = st.secrets["BINANCE_SECRET_KEY"]
+    API_KEY = os.getenv["BINANCE_API_KEY"]
+    SECRET_KEY = os.getenv["BINANCE_SECRET_KEY"]
     client = Client(API_KEY, SECRET_KEY)
 
     # セッション状態の初期化

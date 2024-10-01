@@ -25,8 +25,8 @@ import discord
 from io import StringIO
 
 # Discord設定
-DISCORD_TOKEN = st.secrets["DISCORD_TOKEN"]
-DISCORD_CHANNEL_ID = st.secrets["DISCORD_CHANNEL_ID"]
+DISCORD_TOKEN = os.getenv["DISCORD_TOKEN"]
+DISCORD_CHANNEL_ID = os.getenv["DISCORD_CHANNEL_ID"]
 
 # Discordクライアントの初期化
 intents = discord.Intents.default()
