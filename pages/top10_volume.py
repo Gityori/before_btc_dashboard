@@ -209,9 +209,13 @@ async def run_app():
         col1, col2 = st.columns(2)
         
         with col1:
+            st.write("Binance Spot Data:")
+            st.text(data['binance_spot'])  # ログを表示
             display_volume_data(data['binance_spot'], "Spot")
         
         with col2:
+            st.write("Binance Futures Data:")
+            st.text(data['binance_futures'])  # ログを表示
             display_volume_data(data['binance_futures'], "Perpetual")  # ここを変更
 
         st.markdown("---")
@@ -222,9 +226,13 @@ async def run_app():
         col1, col2 = st.columns(2)
         
         with col1:
+            st.write("Bybit Spot Data:")
+            st.text(data['bybit_spot'])  # ログを表示
             display_volume_data(data['bybit_spot'], "Spot")
         
         with col2:
+            st.write("Bybit Perpetual Data:")
+            st.text(data['bybit_perp'])  # ログを表示
             display_volume_data(data['bybit_perp'], "Perpetual")  # ここを変更
 
 
