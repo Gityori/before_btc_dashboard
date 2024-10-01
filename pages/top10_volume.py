@@ -80,7 +80,12 @@ def capture_output(func, *args, **kwargs):
     old_stdout = sys.stdout
     result = StringIO()
     sys.stdout = result
-    func(*args, **kwargs)
+    try:
+        func(*args, **kwargs)
+    except Exception as e:
+        error_message = f"APIリクエストエラー: {str(e)}"
+        print(error_message)
+        st.error(error_message)  # Streamlitのログにエラーメッセージを表示
     sys.stdout = old_stdout
     return result.getvalue()
 
@@ -135,10 +140,21 @@ def clean_output(output):
 async def update_data():
     try:
         # データ取得と整形
+        st.write("Fetching Binance spot data...")
         binance_spot = clean_output(capture_output(binance_top10.get_binance_volume_top10, 'spot'))
+        st.write(f"Binance spot data: {binance_spot}")
+
+        st.write("Fetching Binance futures data...")
         binance_futures = clean_output(capture_output(binance_top10.get_binance_volume_top10, 'futures'))
+        st.write(f"Binance futures data: {binance_futures}")
+
+        st.write("Fetching Bybit spot data...")
         bybit_spot = clean_output(capture_output(bybit_top10.get_bybit_volume_top10, 'spot'))
+        st.write(f"Bybit spot data: {bybit_spot}")
+
+        st.write("Fetching Bybit perpetual data...")
         bybit_perp = clean_output(capture_output(bybit_top10.get_bybit_volume_top10, 'perp'))
+        st.write(f"Bybit perpetual data: {bybit_perp}")
 
         data = {
             'binance_spot': binance_spot,
