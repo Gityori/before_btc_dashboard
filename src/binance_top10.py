@@ -5,6 +5,7 @@ from operator import itemgetter
 def get_exchange_rates():
     url = "https://api.coingecko.com/api/v3/exchange_rates"
     response = requests.get(url)
+    response.raise_for_status()  # ステータスコードがエラーの場合、例外を発生させる
     data = response.json()
     
     btc_usd_rate = data['rates']['usd']['value']
@@ -23,6 +24,9 @@ def get_binance_futures_data(url):
         return response.json()
     except requests.RequestException as e:
         print(f"APIリクエストエラー: {e}")
+        if response is not None:
+            print(f"ステータスコード: {response.status_code}")
+            print(f"レスポンス内容: {response.text}")
         return []
 
 def is_perpetual(symbol):
@@ -42,10 +46,13 @@ def get_binance_volume_top10(trade_type='spot'):
         exchange_rates = get_exchange_rates()
         
         if trade_type == 'spot':
-            exchange_info = requests.get(exchange_info_url).json()
+            exchange_info_response = requests.get(exchange_info_url)
+            exchange_info_response.raise_for_status()
+            exchange_info = exchange_info_response.json()
             symbols_info = {s['symbol']: s for s in exchange_info['symbols']}
 
             response = requests.get(ticker_url)
+            response.raise_for_status()
             data = response.json()
 
             usdt_prices = {item['symbol'][:-4]: float(item['lastPrice']) for item in data if item['symbol'].endswith('USDT')}
@@ -105,6 +112,9 @@ def get_binance_volume_top10(trade_type='spot'):
 
     except requests.RequestException as e:
         print(f"APIリクエストエラー: {e}")
+        if e.response is not None:
+            print(f"ステータスコード: {e.response.status_code}")
+            print(f"レスポンス内容: {e.response.text}")
     except (KeyError, ValueError) as e:
         print(f"データ処理エラー: {e}")
 
