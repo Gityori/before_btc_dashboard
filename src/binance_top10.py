@@ -1,21 +1,21 @@
 import requests
-import json
 from operator import itemgetter
 
 def get_exchange_rates():
-    url = "https://api.coingecko.com/api/v3/exchange_rates"
-    response = requests.get(url)
-    response.raise_for_status()  # ステータスコードがエラーの場合、例外を発生させる
+    # BinanceからUSDTと各通貨の価格を取得
+    ticker_url = "https://api.binance.com/api/v3/ticker/price"
+    response = requests.get(ticker_url)
+    response.raise_for_status()
     data = response.json()
-    
-    btc_usd_rate = data['rates']['usd']['value']
-    
-    usd_rates = {}
-    for currency, rate_data in data['rates'].items():
-        if currency != 'usd':
-            usd_rates[currency] = btc_usd_rate / rate_data['value']
-    
-    return usd_rates
+
+    exchange_rates = {}
+    for item in data:
+        symbol = item['symbol']
+        price = float(item['price'])
+        if symbol.endswith('USDT'):
+            currency = symbol[:-4]
+            exchange_rates[currency] = price
+    return exchange_rates
 
 def get_binance_futures_data(url):
     try:
@@ -55,60 +55,67 @@ def get_binance_volume_top10(trade_type='spot'):
             response.raise_for_status()
             data = response.json()
 
-            usdt_prices = {item['symbol'][:-4]: float(item['lastPrice']) for item in data if item['symbol'].endswith('USDT')}
-
             for item in data:
                 symbol = item['symbol']
                 if symbol in symbols_info:
                     base_asset = symbols_info[symbol]['baseAsset']
                     quote_asset = symbols_info[symbol]['quoteAsset']
-                    
+
                     try:
                         if quote_asset == 'USDT':
                             item['volumeUSD'] = float(item['quoteVolume'])
                         elif base_asset == 'USDT':
                             item['volumeUSD'] = float(item['volume'])
-                        elif quote_asset.lower() in exchange_rates:
+                        elif quote_asset in exchange_rates:
                             volume_in_quote = float(item['quoteVolume'])
-                            item['volumeUSD'] = volume_in_quote * exchange_rates[quote_asset.lower()]
-                        elif base_asset in usdt_prices:
-                            item['volumeUSD'] = float(item['volume']) * usdt_prices[base_asset]
+                            item['volumeUSD'] = volume_in_quote * exchange_rates[quote_asset]
+                        elif base_asset in exchange_rates:
+                            item['volumeUSD'] = float(item['volume']) * exchange_rates[base_asset]
                         else:
                             item['volumeUSD'] = 0
                     except (ZeroDivisionError, ValueError):
                         item['volumeUSD'] = 0
                 else:
                     item['volumeUSD'] = 0
+            sorted_data = sorted(data, key=lambda x: float(x.get('volumeUSD', 0)), reverse=True)
+            print(f"Binance Spot 取引量トップ10 (USD換算):")
+            for i, pair in enumerate(sorted_data[:10], 1):
+                symbol = pair['symbol']
+                volume_usd = pair.get('volumeUSD', 0)
+                print(f"{i}. {symbol:<10} - 取引量: ${volume_usd:,.2f}")
         else:  # futures
             usdt_data = get_binance_futures_data(usdt_ticker_url)
             coin_data = get_binance_futures_data(coin_ticker_url)
 
             data = []
+            # USDT建て先物の処理
             for item in usdt_data:
                 if is_perpetual(item['symbol']):
-                    item['volumeUSD'] = float(item['volume']) * float(item['lastPrice'])
+                    item['volumeUSD'] = float(item['quoteVolume'])
                     item['type'] = 'USDT-Margined'
                     data.append(item)
 
+            # コイン建て先物の処理
             for item in coin_data:
                 if is_perpetual(item['symbol']):
-                    contract_size = 100 if item['symbol'].startswith('BTC') else 10
+                    # 契約サイズを決定
+                    if item['symbol'].startswith('BTCUSD'):
+                        contract_size = 100  # BTCUSDの契約サイズは100 USD
+                    else:
+                        contract_size = 10   # 他の通貨ペアは10 USD
+
+                    # 取引量を計算
                     item['volumeUSD'] = float(item['volume']) * contract_size
                     item['type'] = 'COIN-Margined'
                     data.append(item)
 
-        sorted_data = sorted(data, key=lambda x: float(x.get('volumeUSD', 0)), reverse=True)
-
-        print(f"Binance{' 先物' if trade_type == 'futures' else ''} 取引量トップ10 (USD換算):")
-        for i, pair in enumerate(sorted_data[:10], 1):
-            symbol = pair['symbol']
-            volume_usd = pair.get('volumeUSD', 0)
-            
-            if trade_type == 'futures':
+            sorted_data = sorted(data, key=lambda x: float(x.get('volumeUSD', 0)), reverse=True)
+            print(f"Binance Futures 取引量トップ10 (USD換算):")
+            for i, pair in enumerate(sorted_data[:10], 1):
+                symbol = pair['symbol']
+                volume_usd = float(pair.get('volumeUSD', 0))
                 contract_type = pair['type']
-                print(f"{i}. {symbol:<15} - 取引量: ${volume_usd:,.2f}")
-            else:
-                print(f"{i}. {symbol:<10} - 取引量: ${volume_usd:,.2f}")
+                print(f"{i}. {symbol:<15} - 取引量: ${volume_usd:,.2f} ({contract_type})")
 
     except requests.RequestException as e:
         print(f"APIリクエストエラー: {e}")
