@@ -22,13 +22,13 @@ from binance.client import Client
 from bigquery_integration import upload_dataframe_to_bigquery
 
 # Binance APIクレデンシャル
-API_KEY = os.getenv["BINANCE_API_KEY"]
-SECRET_KEY = os.getenv["BINANCE_SECRET_KEY"]
+API_KEY = os.getenv("BINANCE_API_KEY")
+SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
-# Google Cloud StorageとBigQueryの設定をsecrets.tomlから読み込む
-dataset_id = os.getenv["BIGQUERY_DATASET_ID"]  # BigQueryのデータセットID
-table_id = os.getenv["BIGQUERY_TABLE_ID"]  # BigQueryのテーブルID
-project_id = os.getenv["BIGQUERY_PROJECT_ID"]  # Google CloudプロジェクトID
+# Google Cloud StorageとBigQueryの設定を環境変数から読み込む
+dataset_id = os.getenv("BIGQUERY_DATASET_ID")  # BigQueryのデータセットID
+table_id = os.getenv("BIGQUERY_TABLE_ID")  # BigQueryのテーブルID
+project_id = os.getenv("BIGQUERY_PROJECT_ID")  # Google CloudプロジェクトID
 service_account_key_path = "C:/Users/kikuchi/Dropbox/Python Scripts/crypto_monitor/btc-dashboard/test-depth-visualize-b3460b9bf594.json"  # サービスアカウントの秘密鍵ファイルパス
 
 # Binance APIベースURL

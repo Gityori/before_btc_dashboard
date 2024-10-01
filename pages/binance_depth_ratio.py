@@ -19,8 +19,8 @@ import pandas as pd
 from binance.client import Client
 
 # Binance APIクレデンシャル
-API_KEY = os.getenv["BINANCE_API_KEY"]
-SECRET_KEY = os.getenv["BINANCE_SECRET_KEY"]
+API_KEY = os.getenv("BINANCE_API_KEY")
+SECRET_KEY = os.getenv("BINANCE_SECRET_KEY")
 
 # Binance APIベースURL
 BASE_URL = 'https://api.binance.com'
