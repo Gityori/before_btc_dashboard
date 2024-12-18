@@ -60,7 +60,7 @@ def main():
     st.markdown("---")
     col1, col2 = st.columns(2)
     with col1:
-        st.session_state.auto_update = st.toggle("自動更新", value=st.session_state.auto_update)
+        st.session_state.auto_update = st.checkbox("自動更新", value=st.session_state.auto_update)
     with col2:
         if st.session_state.last_update:
             st.text(f"最終更新: {st.session_state.last_update.strftime('%Y-%m-%d %H:%M:%S')}")

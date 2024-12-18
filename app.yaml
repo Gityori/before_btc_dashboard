@@ -1,0 +1,17 @@
+runtime: python
+runtime_config:
+  operating_system: "ubuntu18"
+  runtime_version: "3.9"
+entrypoint: streamlit run --server.port=8080 --server.address=0.0.0.0 --server.enableCORS=false --server.enableWebsocketCompression=false --server.enableXsrfProtection=false --server.headless=true main.py
+env: flex
+network:
+  session_affinity: true
+env_variables:
+  BINANCE_API_KEY: "{{ secrets.BINANCE_API_KEY }}"
+  BINANCE_SECRET_KEY: "{{ secrets.BINANCE_SECRET_KEY }}"
+  DISCORD_TOKEN: "{{ secrets.DISCORD_TOKEN }}"
+  DISCORD_CHANNEL_ID: "{{ secrets.DISCORD_CHANNEL_ID }}"
+  GOOGLE_APPLICATION_CREDENTIALS: "{{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+  BIGQUERY_PROJECT_ID: "{{ secrets.BIGQUERY_PROJECT_ID }}"
+  BIGQUERY_DATASET_ID: "{{ secrets.BIGQUERY_DATASET_ID }}"
+  BIGQUERY_TABLE_ID: "{{ secrets.BIGQUERY_TABLE_ID }}"
